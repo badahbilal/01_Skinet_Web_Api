@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,9 +30,16 @@ namespace SkinetWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddControllers();
 
+            //This line for connection string service.
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
+
+            // BADAH.Comment
+            // In this line we inject ProductRepository to services of our project using AddScoped
+            services.AddScoped<IProductRepository, ProductRepository>();
 
 
         }
