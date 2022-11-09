@@ -41,6 +41,9 @@ namespace SkinetWebApi
             // In this line we inject ProductRepository to services of our project using AddScoped
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            // In this line we inject GenericRepository to services of our project using AddScoped
+            services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
+
 
         }
 
