@@ -4,6 +4,7 @@ using Core.Specification;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SkinetWebApi.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,22 +48,42 @@ namespace SkinetWebApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<List<ProductToReturnDto>>> GetProducts()
         {
 
             var spec = new ProductsWithTypesAndBrandsSpecification();
 
             var products = await _productsRepo.ListAsync(spec);
 
-            return Ok(products);
+            return products.Select(productResult => new ProductToReturnDto
+            {
+                Id = productResult.Id,
+                Name = productResult.Name,
+                Description = productResult.Description,
+                PictureUrl = productResult.PictureUrl,
+                Price = productResult.Price,
+                ProductBrand = productResult.ProductBrand.Name,
+                ProductType = productResult.ProductType.Name
+            }).ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
 
-            return await _productsRepo.GetEntityWithSpec(spec);
+            var productResult =  await _productsRepo.GetEntityWithSpec(spec);
+
+            return new ProductToReturnDto
+            {
+                Id = productResult.Id,
+                Name = productResult.Name,
+                Description = productResult.Description,
+                PictureUrl = productResult.PictureUrl,
+                Price = productResult.Price,
+                ProductBrand = productResult.ProductBrand.Name,
+                ProductType = productResult.ProductType.Name
+            };
         }
 
         [HttpGet("brands")]
