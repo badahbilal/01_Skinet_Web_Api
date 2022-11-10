@@ -51,23 +51,15 @@ namespace SkinetWebApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductToReturnDto>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
         {
 
             var spec = new ProductsWithTypesAndBrandsSpecification();
 
             var products = await _productsRepo.ListAsync(spec);
 
-            return products.Select(productResult => new ProductToReturnDto
-            {
-                Id = productResult.Id,
-                Name = productResult.Name,
-                Description = productResult.Description,
-                PictureUrl = productResult.PictureUrl,
-                Price = productResult.Price,
-                ProductBrand = productResult.ProductBrand.Name,
-                ProductType = productResult.ProductType.Name
-            }).ToList();
+            return Ok(_mapper
+                       .Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products));
         }
 
         [HttpGet("{id}")]
