@@ -65,6 +65,9 @@ namespace SkinetWebApi
 
             app.UseRouting();
 
+            //This Line for implementing middleware of exploring static files
+            app.UseStaticFiles();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
