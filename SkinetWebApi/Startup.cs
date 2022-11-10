@@ -1,3 +1,4 @@
+using AutoMapper;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SkinetWebApi.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +45,10 @@ namespace SkinetWebApi
 
             // In this line we inject GenericRepository to services of our project using AddScoped
             services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
+
+            // Here we inject the auto mapper to the container services of dependency injection
+            services.AddAutoMapper(typeof(MappingProfiles));
+
 
 
         }

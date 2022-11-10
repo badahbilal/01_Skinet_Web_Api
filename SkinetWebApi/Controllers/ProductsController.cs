@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using AutoMapper;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Specification;
 using Infrastructure.Data;
@@ -18,15 +19,17 @@ namespace SkinetWebApi.Controllers
         private readonly IGenericRepository<Product> _productsRepo;
         private readonly IGenericRepository<ProductBrand> _productBrandRepo;
         private readonly IGenericRepository<ProductType> _productTypeRepo;
-
+        private readonly IMapper _mapper;
 
         public ProductsController(IGenericRepository<Product> productsRepo,
                                  IGenericRepository<ProductBrand> productBrandRepo,
-                                 IGenericRepository<ProductType> productTypeRepo)
+                                 IGenericRepository<ProductType> productTypeRepo,
+                                 IMapper mapper)
         {
             _productsRepo = productsRepo;
             _productBrandRepo = productBrandRepo;
             _productTypeRepo = productTypeRepo;
+            _mapper = mapper;
         }
 
         //private readonly IProductRepository _productRepository;
@@ -74,16 +77,8 @@ namespace SkinetWebApi.Controllers
 
             var productResult =  await _productsRepo.GetEntityWithSpec(spec);
 
-            return new ProductToReturnDto
-            {
-                Id = productResult.Id,
-                Name = productResult.Name,
-                Description = productResult.Description,
-                PictureUrl = productResult.PictureUrl,
-                Price = productResult.Price,
-                ProductBrand = productResult.ProductBrand.Name,
-                ProductType = productResult.ProductType.Name
-            };
+            return _mapper.Map<Product, ProductToReturnDto>(productResult);
+                
         }
 
         [HttpGet("brands")]
