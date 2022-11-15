@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SkinetWebApi.Errors;
 using SkinetWebApi.Helpers;
 using SkinetWebApi.Middleware;
 using System;
@@ -49,6 +50,28 @@ namespace SkinetWebApi
 
             // Here we inject the auto mapper to the container services of dependency injection
             services.AddAutoMapper(typeof(MappingProfiles));
+
+
+            // To be honest this section i didn't understand it
+            // what i understood that we extended the baseclass and
+            // we changed to anthoer behavior
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                                    .Where(e => e.Value.Errors.Count > 0)
+                                    .SelectMany(x => x.Value.Errors)
+                                    .Select(x => x.ErrorMessage).ToArray();
+
+                    var errorsResponse = new ApiValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(errorsResponse);
+                };
+            });
 
 
 
