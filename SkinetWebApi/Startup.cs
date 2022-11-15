@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SkinetWebApi.Helpers;
+using SkinetWebApi.Middleware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +57,13 @@ namespace SkinetWebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // We stop this middleware exception to use our custom error exception see line before if bloc
+                //app.UseDeveloperExceptionPage();
             }
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
