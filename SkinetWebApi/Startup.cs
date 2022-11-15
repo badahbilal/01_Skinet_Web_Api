@@ -93,9 +93,11 @@ namespace SkinetWebApi
             {
                 // We stop this middleware exception to use our custom error exception see line before if bloc
                 //app.UseDeveloperExceptionPage();
-            }
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                
+            }
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
@@ -103,7 +105,8 @@ namespace SkinetWebApi
             {
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V");
             });
-             
+
+
 
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");

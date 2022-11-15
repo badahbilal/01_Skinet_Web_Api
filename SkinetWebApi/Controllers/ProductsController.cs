@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace SkinetWebApi.Controllers
 {
+    
     public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productsRepo;
@@ -37,10 +38,10 @@ namespace SkinetWebApi.Controllers
         //    _productRepository = productRepository;
         //}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
 
         [HttpGet]
