@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using SkinetWebApi.Errors;
 using SkinetWebApi.Helpers;
 using SkinetWebApi.Middleware;
@@ -74,6 +75,11 @@ namespace SkinetWebApi
             });
 
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "V1" });
+            });
+
 
         }
 
@@ -88,6 +94,17 @@ namespace SkinetWebApi
                 // We stop this middleware exception to use our custom error exception see line before if bloc
                 //app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V");
+            });
+             
+
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
