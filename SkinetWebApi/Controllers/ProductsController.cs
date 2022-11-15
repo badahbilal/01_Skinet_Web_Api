@@ -3,9 +3,11 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specification;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SkinetWebApi.Dtos;
+using SkinetWebApi.Errors;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,11 +59,15 @@ namespace SkinetWebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
 
             var productResult =  await _productsRepo.GetEntityWithSpec(spec);
+
+            if (productResult == null) return NotFound(new ApiResponse(404));
 
             return _mapper.Map<Product, ProductToReturnDto>(productResult);
                 
