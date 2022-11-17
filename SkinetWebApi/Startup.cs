@@ -50,7 +50,7 @@ namespace SkinetWebApi
             services.AddApplicationServices();
 
             //This method to call extention code for adding swagger
-            services.AddSwaggerDocumentation();
+            services.AddSwaggerDocumentation(); 
 
         }
 
